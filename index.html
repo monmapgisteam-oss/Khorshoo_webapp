@@ -972,13 +972,13 @@
               borders: BORD, margins: { top: 30, bottom: 30, left: 90, right: 90 },
               shading: o.fill ? { type: d.ShadingType.CLEAR, color: "auto", fill: o.fill } : undefined,
               width: o.w ? { size: o.w, type: d.WidthType.PERCENTAGE } : undefined,
-              children: [new d.Paragraph({ children: [new d.TextRun({ text: String(text == null ? "" : text), bold: !!o.bold, color: o.color || "000000", size: 18 })] })]
+              children: [new d.Paragraph({ children: [new d.TextRun({ text: String(text == null ? "" : text), bold: !!o.bold, color: o.color || "000000", size: 20 })] })]
             });
           }
           function hrow(arr) { return new d.TableRow({ tableHeader: true, children: arr.map(function (t) { return cell(t, { bold: true, fill: "0B1A2B", color: "FFFFFF" }); }) }); }
           function drow(arr) { return new d.TableRow({ children: arr.map(function (t) { return cell(t); }) }); }
           function tbl(rows) { return new d.Table({ width: { size: 100, type: d.WidthType.PERCENTAGE }, rows: rows }); }
-          function heading(t) { return new d.Paragraph({ spacing: { before: 220, after: 90 }, children: [new d.TextRun({ text: t, bold: true, size: 26, color: "0F3D14" })] }); }
+          function heading(t) { return new d.Paragraph({ spacing: { before: 220, after: 90 }, children: [new d.TextRun({ text: t, bold: true, size: 24, color: "0F3D14" })] }); }
           function para(t, o) { o = o || {}; return new d.Paragraph({ spacing: o.sp ? { before: 120 } : undefined, children: [new d.TextRun({ text: String(t == null ? "" : t), bold: !!o.bold, size: o.size || 20 })] }); }
           var gap = function () { return new d.Paragraph(""); };
 
@@ -1020,7 +1020,7 @@
 
           var kids = [];
           kids.push(new d.Paragraph({ alignment: d.AlignmentType.CENTER, spacing: { after: 60 }, children: [new d.TextRun({ text: "ШИНЭ ХОРШОО ХӨДӨЛГӨӨН СУДАЛГААНЫ ТАЙЛАН", bold: true, size: 28, color: "0F3D14" })] }));
-          kids.push(new d.Paragraph({ alignment: d.AlignmentType.CENTER, children: [new d.TextRun({ text: "Огноо: " + new Date().toLocaleString("mn-MN"), size: 18, color: "666666" })] }));
+          kids.push(new d.Paragraph({ alignment: d.AlignmentType.CENTER, children: [new d.TextRun({ text: "Огноо: " + new Date().toLocaleString("mn-MN"), size: 20, color: "666666" })] }));
           if (fils.length) kids.push(para("Шүүлтийн нөхцөл: " + fils.join("; "), { sp: true }));
           kids.push(gap());
 
@@ -1045,10 +1045,9 @@
           kids.push(tbl([hrow(["Зориулалт", "Дүн"])].concat(purposeRows.map(function (r) { return drow([r[0], fmtMoney(r[1])]); }))));
           kids.push(gap());
 
-          kids.push(heading("4. " + (rpHead || "Асуумжийн дүн") + (rpSub ? " (" + rpSub + ")" : "")));
+          kids.push(heading("4. " + (rpHead || "Асуумжийн дүн")));
 
           // --- Нийтлэг асуумж 4.1–4.7 (бүх чиглэлд адил, дашбоардад харагдахгүй) ---
-          kids.push(para("Нийтлэг асуултууд (бүх чиглэлд адил):", { bold: true, sp: true }));
           var COMMON = [
             { label: "Зээлийн үр дүнг хэрхэн үнэлдэг вэ?", field: "F1", type: "cat" },
             { label: "Хоршоонд нэгдсэнээр гарсан өөрчлөлт", field: "F2", type: "cat" },
@@ -1078,7 +1077,7 @@
                 kids.push(para(tn.toLocaleString("en-US") + " хариулт бичгээр ирүүлсэн. Ирүүлсэн саналууд:"));
                 var ar = await layer.queryFeatures({ where: curWhere() + " AND " + cq.field + " IS NOT NULL", outFields: [cq.field], returnGeometry: false, num: 1000 });
                 var answers = ar.features.map(function (f) { return f.attributes[cq.field]; }).filter(function (v) { return v != null && String(v).trim() !== ""; });
-                answers.forEach(function (ans) { kids.push(new d.Paragraph({ bullet: { level: 0 }, children: [new d.TextRun({ text: String(ans).trim(), size: 18 })] })); });
+                answers.forEach(function (ans) { kids.push(new d.Paragraph({ indent: { left: 220 }, spacing: { after: 20 }, children: [new d.TextRun({ text: "• ", size: 16 }), new d.TextRun({ text: String(ans).trim(), size: 20 })] })); });
                 if (tn > answers.length) kids.push(para("… (нийт " + tn.toLocaleString("en-US") + " саналаас эхний " + answers.length + " нь харагдаж байна)"));
               }
             } else if (cq.type === "num2") {
