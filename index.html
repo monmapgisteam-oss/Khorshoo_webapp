@@ -1072,7 +1072,15 @@
             } else if (cq.type === "text") {
               var tres = await layer.queryFeatures({ where: curWhere(), returnGeometry: false, outStatistics: [{ statisticType: "count", onStatisticField: cq.field, outStatisticFieldName: "c" }] });
               var tn = (tres.features[0] && tres.features[0].attributes.c) || 0;
-              kids.push(para(tn.toLocaleString("en-US") + " хариулт бичгээр ирүүлсэн."));
+              if (curWhere() === "1=1") {
+                kids.push(para(tn.toLocaleString("en-US") + " хариулт бичгээр ирүүлсэн. (Бичгэн саналуудыг харахын тулд бүс эсвэл аймгаар шүүнэ үү.)"));
+              } else {
+                kids.push(para(tn.toLocaleString("en-US") + " хариулт бичгээр ирүүлсэн. Ирүүлсэн саналууд:"));
+                var ar = await layer.queryFeatures({ where: curWhere() + " AND " + cq.field + " IS NOT NULL", outFields: [cq.field], returnGeometry: false, num: 1000 });
+                var answers = ar.features.map(function (f) { return f.attributes[cq.field]; }).filter(function (v) { return v != null && String(v).trim() !== ""; });
+                answers.forEach(function (ans) { kids.push(new d.Paragraph({ bullet: { level: 0 }, children: [new d.TextRun({ text: String(ans).trim(), size: 18 })] })); });
+                if (tn > answers.length) kids.push(para("… (нийт " + tn.toLocaleString("en-US") + " саналаас эхний " + answers.length + " нь харагдаж байна)"));
+              }
             } else if (cq.type === "num2") {
               var s1 = await numStat(cq.fields[0]); var s2 = await numStat(cq.fields[1]);
               var money = cq.money;
