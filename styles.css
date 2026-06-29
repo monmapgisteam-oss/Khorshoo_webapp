@@ -1,0 +1,225 @@
+:root {
+  --brand: #1b5e20;
+  --brand-dark: #0f3d14;
+  --accent: #2e7d32;
+  --panel-bg: #ffffff;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --track: #eef1ee;
+  --kpi-bg: #f3f7f3;
+
+  /* Header (бараан загвар) */
+  --hdr-bg: #0b1a2b;
+  --hdr-bg2: #0e2236;
+  --hdr-teal: #29c5d6;
+  --hdr-text: #eaf2f6;
+  --hdr-sub: #8aa0ad;
+  --hdr-border: #1d3a52;
+}
+* { box-sizing: border-box; }
+
+/* ===== Нэвтрэх (login) ===== */
+#login-overlay { position: fixed; inset: 0; z-index: 1000; background: var(--hdr-bg); display: flex; align-items: center; justify-content: center; }
+#login-overlay.hidden { display: none; }
+#login-form { background: var(--hdr-bg2); border: 1px solid var(--hdr-teal); border-radius: 10px; padding: 32px 36px; width: 330px; max-width: 90vw; box-shadow: 0 12px 40px rgba(0,0,0,.5); text-align: center; }
+#login-form h2 { color: #f4f8fa; font-size: 18px; letter-spacing: .05em; margin: 0 0 4px; }
+#login-form .sub { color: var(--hdr-sub); font-size: 13px; margin-bottom: 22px; }
+#login-form input { width: 100%; margin-bottom: 12px; padding: 10px 12px; border: 1px solid var(--hdr-border); border-radius: 6px; background: #08131f; color: var(--hdr-text); font-size: 14px; }
+#login-form input:focus { outline: none; border-color: var(--hdr-teal); }
+#login-form button { width: 100%; padding: 11px; background: var(--hdr-teal); color: #05222a; border: none; border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer; }
+#login-form button:hover { background: #4dd0e1; }
+#login-err { color: #ff6b6b; font-size: 12px; min-height: 15px; margin-bottom: 6px; }
+
+/* ===== Scrollbar дизайн (бараан-teal) ===== */
+* { scrollbar-width: thin; scrollbar-color: #2f6a82 transparent; }
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,.04); }
+::-webkit-scrollbar-thumb { background: #2f6a82; border-radius: 6px; border: 2px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-thumb:hover { background: #29c5d6; background-clip: content-box; }
+::-webkit-scrollbar-corner { background: transparent; }
+html, body { margin: 0; padding: 0; height: 100%; font-family: "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif; color: #111; }
+#app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+/* ===== Header (ArcGIS Dashboards маягийн category selector) ===== */
+header.topbar {
+  background: var(--hdr-bg); color: var(--hdr-text); display: flex; align-items: stretch;
+  flex: none; height: 64px; z-index: 30; border-bottom: 1px solid var(--hdr-teal);
+}
+header.topbar .title {
+  display: flex; align-items: center; padding: 0 28px; flex: 1; min-width: 0;
+}
+header.topbar .title h1 {
+  font-size: 22px; font-weight: 600; margin: 0; letter-spacing: .06em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #f4f8fa;
+}
+#report-btn { align-self: center; display: flex; align-items: center; gap: 7px; background: rgba(41,197,214,.15); border: 1px solid var(--hdr-teal); color: var(--hdr-teal); border-radius: 6px; padding: 8px 13px; margin: 0 16px 0 14px; cursor: pointer; font-size: 13px; font-weight: 600; white-space: nowrap; }
+#report-btn:hover { background: rgba(41,197,214,.3); }
+#report-btn svg { width: 17px; height: 17px; stroke: currentColor; fill: none; flex: none; }
+.selectors { display: flex; align-items: stretch; }
+.sel {
+  display: flex; align-items: center; gap: 10px; padding: 0 18px; min-width: 190px;
+  border-left: 1px solid var(--hdr-border); cursor: pointer; position: relative;
+  transition: background .15s;
+}
+.sel:hover { background: var(--hdr-bg2); }
+.sel.open { background: var(--hdr-bg2); box-shadow: inset 0 0 0 1px var(--hdr-teal); }
+.sel .ico { width: 18px; height: 18px; flex: none; stroke: var(--hdr-teal); fill: none; }
+.sel-txt { min-width: 0; }
+.sel-label { font-size: 12px; font-weight: 700; letter-spacing: .05em; color: var(--hdr-text); }
+.sel-sum { font-size: 12px; color: var(--hdr-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+.sel.has-val .sel-sum { color: var(--hdr-teal); }
+.sel .badge {
+  margin-left: auto; background: var(--hdr-teal); color: #05222a; font-size: 11px; font-weight: 700;
+  border-radius: 10px; padding: 1px 7px; display: none;
+}
+.sel.has-val .badge { display: inline-block; }
+
+/* Dropdown */
+#dropdown {
+  position: fixed; width: 270px; background: var(--hdr-bg2); border: 1px solid var(--hdr-teal);
+  box-shadow: 0 8px 24px rgba(0,0,0,.45); z-index: 40; display: none; flex-direction: column;
+  color: var(--hdr-text);
+}
+#dropdown.show { display: flex; }
+.dd-search { padding: 10px; border-bottom: 1px solid var(--hdr-border); display: flex; align-items: center; gap: 8px; }
+.dd-search svg { width: 15px; height: 15px; stroke: var(--hdr-sub); fill: none; flex: none; }
+.dd-search input {
+  flex: 1; background: #08131f; border: 1px solid var(--hdr-border); color: var(--hdr-text);
+  border-radius: 4px; padding: 6px 8px; font-size: 13px; outline: none;
+}
+.dd-search input:focus { border-color: var(--hdr-teal); }
+.dd-list { max-height: 280px; overflow-y: auto; padding: 6px 0; }
+.dd-item { display: flex; align-items: center; gap: 9px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+.dd-item:hover { background: rgba(41,197,214,.12); }
+.dd-item input { accent-color: var(--hdr-teal); width: 15px; height: 15px; flex: none; }
+.dd-item .lbl { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dd-item .cnt { color: var(--hdr-sub); font-size: 11px; font-variant-numeric: tabular-nums; }
+.dd-empty { padding: 14px 12px; color: var(--hdr-sub); font-size: 12px; }
+.dd-footer { display: flex; border-top: 1px solid var(--hdr-border); }
+.dd-footer button {
+  flex: 1; background: transparent; color: var(--hdr-sub); border: none; padding: 11px; font-size: 13px; cursor: pointer;
+}
+.dd-footer button:hover { color: var(--hdr-text); background: var(--hdr-bg); }
+.dd-footer .primary { color: var(--hdr-teal); border-left: 1px solid var(--hdr-border); font-weight: 600; }
+
+/* ===== Body ===== */
+.body { flex: 1; display: flex; min-height: 0; }
+.panel { width: 380px; min-width: 380px; background: var(--panel-bg); border-right: 1px solid var(--line); overflow-y: auto; display: flex; flex-direction: column; }
+.panel-right { border-right: none; border-left: 1px solid var(--hdr-border); background: var(--hdr-bg); color: var(--hdr-text); }
+/* Газрын зураг дээрх индикаторууд */
+.map-indicators { display: flex; gap: 10px; padding: 10px 12px; background: var(--hdr-bg); flex: none; margin-bottom: -1px; position: relative; z-index: 2; }
+.mi { flex: 1; background: rgba(11,26,43,.92); border: 1px solid rgba(41,197,214,.5); border-radius: 4px; padding: 7px 12px 9px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,.35); }
+.mi-label { font-size: 12.5px; font-weight: 700; letter-spacing: .06em; color: #8fd0dc; text-transform: uppercase; margin-bottom: 5px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.mi-val { display: flex; align-items: center; gap: 9px; font-size: 24px; font-weight: 700; color: #f4f8fa; line-height: 1; }
+.mi-val svg { width: 22px; height: 22px; stroke: #cfe8ef; fill: none; flex: none; }
+@media (max-width: 1100px) { .mi-val { font-size: 19px; } .mi-label { font-size: 10px; } }
+
+.resizer { width: 4px; flex: none; cursor: col-resize; background: var(--hdr-border); z-index: 6; transition: background .15s; }
+.resizer:hover, .resizer.dragging { background: var(--hdr-teal); }
+#view { flex: 1; position: relative; min-width: 0; display: flex; flex-direction: column; background: var(--hdr-bg); }
+#map { position: relative; flex: 1 1 auto; min-height: 0; background: var(--hdr-bg); }
+/* ArcGIS view focus outline (нимгэн цайвар хүрээ) арилгах */
+.esri-view-surface:focus, .esri-view-surface--inset-outline:focus::after { outline: none !important; }
+.esri-view .esri-view-surface::after { display: none !important; }
+.loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.7); font-size: 14px; color: var(--brand-dark); z-index: 5; }
+.map-scale { background: rgba(11,26,43,.85); color: #cfe8ef; border: 1px solid var(--hdr-border); border-radius: 4px; padding: 3px 9px; font-size: 12px; font-variant-numeric: tabular-nums; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+
+.psearch { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.psearch input { width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; font-size: 13px; }
+
+.kpi-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.kpi { background: var(--kpi-bg); border: 1px solid #e2ece2; border-radius: 10px; padding: 11px 12px; }
+.kpi .v { font-size: 19px; font-weight: 700; color: var(--brand-dark); line-height: 1.1; }
+.kpi .l { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+.chart { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.chart h3 { font-size: 12px; margin: 0 0 10px; color: var(--brand-dark); text-transform: uppercase; letter-spacing: .03em; display: flex; justify-content: space-between; }
+.chart h3 .hint { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted); font-size: 10px; }
+.bar-row { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 2px 0; border-radius: 4px; }
+.bar-row .bl { width: 110px; min-width: 110px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #cdd9e0; }
+.bar-track { flex: 1; background: rgba(255,255,255,.07); border-radius: 4px; height: 15px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px 0 0 4px; background: var(--hdr-teal); transition: width .35s ease; min-width: 2px; }
+.bar-val { width: 52px; min-width: 52px; text-align: right; font-variant-numeric: tabular-nums; color: var(--hdr-sub); }
+.chart .empty { font-size: 12px; color: var(--hdr-sub); font-style: italic; }
+/* Баруун самбарын histogram (зүүн chart шиг) */
+.hbar-row { display: flex; align-items: center; gap: 8px; height: 23px; }
+.hbar-label { width: 104px; min-width: 104px; text-align: right; font-size: 11px; color: #cdd9e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hbar-plot { position: relative; flex: 1; height: 15px; margin-right: 46px; }
+.hbar-fill { position: absolute; left: 0; top: 0; height: 100%; background: rgba(41,197,214,.16); border: 1px solid rgba(41,197,214,.6); box-sizing: border-box; border-radius: 3px; min-width: 2px; transition: width .35s ease; }
+.hbar-val { position: absolute; top: 50%; transform: translateY(-50%); padding-left: 6px; font-size: 11px; color: var(--hdr-sub); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.pp-section-title { font-size: 12px; font-weight: 700; color: var(--brand-dark); margin: 12px 0 6px; padding-bottom: 4px; border-bottom: 1px solid var(--line); text-transform: uppercase; letter-spacing: .02em; }
+.pp-row { display: flex; font-size: 13px; padding: 3px 0; }
+.pp-row .k { flex: 1; color: var(--muted); padding-right: 10px; }
+.pp-row .v { flex: 1; text-align: right; font-weight: 600; color: #111; word-break: break-word; }
+.pp-empty { font-size: 12px; color: var(--muted); font-style: italic; }
+
+/* ===== Баруун самбар: динамик асуумжийн дүн ===== */
+.rp-head { padding: 14px 16px; border-bottom: 1px solid var(--hdr-border); background: var(--hdr-bg2); position: sticky; top: 0; z-index: 1; }
+.rp-head h2 { font-size: 14px; margin: 0; color: #f4f8fa; line-height: 1.3; }
+.rp-head .sub { font-size: 12px; color: var(--hdr-sub); margin-top: 4px; }
+.rp-hint { padding: 40px 22px; color: var(--hdr-sub); font-size: 13px; line-height: 1.6; text-align: center; }
+.rp-hint b { color: var(--hdr-teal); }
+.rp-card { padding: 12px 16px; border-bottom: 1px solid var(--hdr-border); }
+.rp-q { font-size: 13px; color: #cdd9e0; margin-bottom: 9px; font-weight: 600; line-height: 1.4; }
+.rp-empty { font-size: 12px; color: var(--hdr-sub); font-style: italic; }
+.ind { display: flex; align-items: baseline; gap: 7px; }
+.ind .big { font-size: 22px; font-weight: 700; color: var(--hdr-teal); line-height: 1; }
+.ind .unit { font-size: 12px; color: var(--hdr-sub); }
+.ind-sub { font-size: 11px; color: var(--hdr-sub); margin-top: 6px; text-align: right; }
+.donut-wrap { display: flex; align-items: center; gap: 14px; }
+.donut-wrap svg { flex: none; }
+.dleg { font-size: 11px; flex: 1; min-width: 0; }
+.dleg .r { display: flex; align-items: center; gap: 6px; padding: 1.5px 0; }
+.dleg .sw { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.dleg .nm { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #cdd9e0; }
+.dleg .vv { color: var(--hdr-sub); font-variant-numeric: tabular-nums; }
+/* Санал зөвлөмж — товч ба жагсаалт */
+.rp-sgbtn { background: rgba(41,197,214,.12); border: 1px solid rgba(41,197,214,.5); color: var(--hdr-teal); border-radius: 5px; padding: 7px 12px; font-size: 12px; cursor: pointer; }
+.rp-sgbtn:hover { background: rgba(41,197,214,.22); }
+#sg-panel { position: fixed; width: 420px; max-width: 90vw; max-height: 38vh; background: var(--hdr-bg2); border: 1px solid var(--hdr-teal); border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,.5); z-index: 50; display: none; flex-direction: column; color: var(--hdr-text); }
+#sg-panel.show { display: flex; }
+.sg-head { padding: 12px 16px; border-bottom: 1px solid var(--hdr-border); font-size: 13px; font-weight: 600; color: #f4f8fa; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.sg-count { color: var(--hdr-teal); font-size: 12px; flex: none; }
+.sg-list { overflow-y: auto; padding: 4px 0; }
+.sg-item { padding: 8px 16px; font-size: 13px; color: #dbe7ee; border-bottom: 1px solid rgba(255,255,255,.05); line-height: 1.45; }
+.sg-empty { padding: 18px 16px; color: var(--hdr-sub); font-size: 13px; }
+.sg-rz { position: absolute; z-index: 2; }
+.sg-rz-l { left: -3px; top: 0; bottom: 0; width: 7px; cursor: ew-resize; }
+.sg-rz-t { top: -3px; left: 0; right: 0; height: 7px; cursor: ns-resize; }
+.sg-rz-tl { top: -4px; left: -4px; width: 14px; height: 14px; cursor: nwse-resize; z-index: 3; }
+.sg-rz-l:hover, .sg-rz-t:hover, .sg-rz-tl:hover { background: rgba(41,197,214,.3); }
+
+/* ===== Зүүн самбар: serial bar chart (бараан) ===== */
+#panel-left { background: var(--hdr-bg); color: var(--hdr-text); overflow: hidden; border-right: none; }
+#left-chart { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.chart-switcher { display: flex; align-items: center; height: 40px; flex: none; border-top: 1px solid var(--hdr-border); background: var(--hdr-bg2); }
+.cs-arrow { width: 44px; height: 100%; background: none; border: none; color: var(--hdr-sub); font-size: 20px; line-height: 1; cursor: pointer; transition: color .15s, background .15s; }
+.cs-arrow:hover { color: var(--hdr-teal); background: rgba(41,197,214,.10); }
+.cs-arrow:disabled { opacity: .3; cursor: default; }
+.cs-arrow:disabled:hover { color: var(--hdr-sub); background: none; }
+.cs-title { flex: 1; text-align: center; font-size: 13px; font-weight: 600; color: #dbe7ee; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 6px; }
+.serial-head { padding: 14px 16px 6px; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; text-align: center; color: #f4f8fa; position: sticky; top: 0; background: var(--hdr-bg); z-index: 1; }
+.serial-sub { padding: 0 16px 6px; font-size: 11px; color: var(--hdr-sub); }
+.serial { padding: 4px 16px 8px; flex: 1 1 auto; display: flex; flex-direction: column; }
+.s-row { display: flex; align-items: center; gap: 8px; flex: 1 1 auto; min-height: 22px; }
+.s-label { width: 84px; min-width: 84px; text-align: right; font-size: 11px; color: #cdd9e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.s-plot { position: relative; flex: 1; height: 60%; min-height: 14px; margin-right: 56px; }
+.s-bar { position: absolute; left: 0; top: 0; height: 100%; background: rgba(41,197,214,.10); border: 1px solid #2c6f8a; box-sizing: border-box; cursor: pointer; transition: width .4s ease; }
+.s-row:hover .s-bar { background: rgba(41,197,214,.22); }
+.s-row.active .s-bar { background: rgba(41,197,214,.38); border-color: var(--hdr-teal); }
+.s-val { position: absolute; top: 50%; transform: translateY(-50%); font-size: 11px; color: #9fd9e6; white-space: nowrap; pointer-events: none; }
+.s-axis { display: flex; gap: 8px; margin-top: 8px; padding: 0 16px; }
+.s-axis .sp { width: 84px; min-width: 84px; }
+.s-axis .ax { flex: 1; position: relative; height: 18px; border-top: 1px solid #24435c; margin-right: 56px; }
+.s-axis .t { position: absolute; top: 3px; font-size: 10px; color: #7fa0b2; white-space: nowrap; }
+.serial-empty { padding: 24px 16px; color: var(--hdr-sub); font-size: 13px; }
+.separator { height: 0; border-top: 2px solid rgba(41,197,214,.55); margin: 8px 16px; }
+
+@media (max-width: 900px) {
+  header.topbar { height: auto; flex-direction: column; }
+  .selectors { flex-wrap: wrap; }
+  .sel { flex: 1 1 50%; border-top: 1px solid var(--hdr-border); min-width: 0; }
+  .body { flex-direction: column; }
+  .panel { width: 100%; min-width: 0; max-height: 50vh; }
+}
