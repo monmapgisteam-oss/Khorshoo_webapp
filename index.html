@@ -1,97 +1,160 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="mn">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Хоршоодын судалгаа — Дашбоард</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>Хоршоодын судалгаа — Дашбоард</title>
 
-  <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css" />
-  <link rel="stylesheet" href="styles.css" />
-  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  <script src="https://js.arcgis.com/4.30/"></script>
-</head>
-<body>
-  <div id="login-overlay">
-    <form id="login-form">
-      <h2>ХОРШООДЫН СУДАЛГАА</h2>
-      <div class="sub">Нэвтрэх</div>
-      <input id="login-user" type="text" placeholder="Хэрэглэгчийн нэр" autocomplete="username" />
-      <input id="login-pass" type="password" placeholder="Нууц үг" autocomplete="current-password" />
-      <div id="login-err"></div>
-      <button type="submit">Нэвтрэх</button>
-    </form>
-  </div>
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.30/esri/themes/light/main.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://js.arcgis.com/4.30/"></script>
+  </head>
+  <body>
+    <div id="login-overlay">
+      <form id="login-form">
+        <h2>ХОРШООДЫН СУДАЛГАА</h2>
+        <div class="sub">Нэвтрэх</div>
+        <input
+          id="login-user"
+          type="text"
+          placeholder="Хэрэглэгчийн нэр"
+          autocomplete="username"
+        />
+        <input
+          id="login-pass"
+          type="password"
+          placeholder="Нууц үг"
+          autocomplete="current-password"
+        />
+        <div id="login-err"></div>
+        <button type="submit">Нэвтрэх</button>
+      </form>
+    </div>
 
-  <div id="app">
-    <header class="topbar">
-      <div class="title"><h1>ХОРШООДЫН СУДАЛГАА</h1></div>
-      <div class="selectors" id="selectors"></div>
-      <button id="report-btn" title="Тайлан татах (Word)">
-        <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
-        <span>Тайлан</span>
-      </button>
-    </header>
+    <div id="app">
+      <header class="topbar">
+        <div class="title"><h1>ХОРШООДЫН СУДАЛГАА</h1></div>
+        <div class="selectors" id="selectors"></div>
+        <button id="report-btn" title="Тайлан татах (Word)">
+          <svg viewBox="0 0 24 24" stroke-width="2">
+            <path d="M12 3v12" />
+            <path d="M7 10l5 5 5-5" />
+            <path d="M5 21h14" />
+          </svg>
+          <span>Тайлан</span>
+        </button>
+      </header>
 
-    <div class="body">
-      <aside class="panel" id="panel-left">
-        <div id="left-chart"></div>
-        <div class="chart-switcher" id="chart-switcher">
-          <button class="cs-arrow" id="cs-prev" title="Өмнөх график">‹</button>
-          <div class="cs-title" id="cs-title"></div>
-          <button class="cs-arrow" id="cs-next" title="Дараах график">›</button>
+      <div class="body">
+        <aside class="panel" id="panel-left">
+          <div id="left-chart"></div>
+          <div class="chart-switcher" id="chart-switcher">
+            <button class="cs-arrow" id="cs-prev" title="Өмнөх график">
+              ‹
+            </button>
+            <div class="cs-title" id="cs-title"></div>
+            <button class="cs-arrow" id="cs-next" title="Дараах график">
+              ›
+            </button>
+          </div>
+        </aside>
+        <div
+          class="resizer"
+          id="resizer-left"
+          title="Чирж өргөсгөх / нарийсгах"
+        ></div>
+
+        <div id="view">
+          <div class="map-indicators" id="map-indicators">
+            <div class="mi">
+              <div class="mi-label">Зээлийн тоо</div>
+              <div class="mi-val">
+                <svg viewBox="0 0 24 24" stroke-width="1.8">
+                  <path
+                    d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"
+                  />
+                  <path d="M14 3v6h6" />
+                  <path d="M8 13h8M8 17h6" /></svg
+                ><span id="ind-count">—</span>
+              </div>
+            </div>
+            <div class="mi">
+              <div class="mi-label">Олгосон зээл</div>
+              <div class="mi-val">
+                <svg viewBox="0 0 24 24" stroke-width="1.8">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7v10" />
+                  <path
+                    d="M14.5 9.2a2.6 2 0 0 0-5 .3c0 2.5 5 1.3 5 3.8a2.6 2 0 0 1-5 .3"
+                  /></svg
+                ><span id="ind-loan">—</span>
+              </div>
+            </div>
+            <div class="mi">
+              <div class="mi-label">Судалгаанд хамрагдсан</div>
+              <div class="mi-val">
+                <svg viewBox="0 0 24 24" stroke-width="1.8">
+                  <circle cx="9" cy="8" r="3" />
+                  <path d="M3 20c0-3.3 3-5.5 6-5.5s6 2.2 6 5.5" />
+                  <circle cx="17.5" cy="9" r="2.2" />
+                  <path d="M21.5 19.5c0-2.3-1.6-3.8-4-4.3" /></svg
+                ><span id="ind-survey">—</span>
+              </div>
+            </div>
+          </div>
+          <div id="map"></div>
+          <div class="loading" id="loading">Дашбоард ачааллаж байна…</div>
         </div>
-      </aside>
-      <div class="resizer" id="resizer-left" title="Чирж өргөсгөх / нарийсгах"></div>
 
-      <div id="view">
-        <div class="map-indicators" id="map-indicators">
-          <div class="mi">
-            <div class="mi-label">Зээлийн тоо</div>
-            <div class="mi-val"><svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h6"/></svg><span id="ind-count">—</span></div>
-          </div>
-          <div class="mi">
-            <div class="mi-label">Олгосон зээл</div>
-            <div class="mi-val"><svg viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.2a2.6 2 0 0 0-5 .3c0 2.5 5 1.3 5 3.8a2.6 2 0 0 1-5 .3"/></svg><span id="ind-loan">—</span></div>
-          </div>
-          <div class="mi">
-            <div class="mi-label">Судалгаанд хамрагдсан</div>
-            <div class="mi-val"><svg viewBox="0 0 24 24" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 3-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17.5" cy="9" r="2.2"/><path d="M21.5 19.5c0-2.3-1.6-3.8-4-4.3"/></svg><span id="ind-survey">—</span></div>
-          </div>
-        </div>
-        <div id="map"></div>
-        <div class="loading" id="loading">Дашбоард ачааллаж байна…</div>
+        <div
+          class="resizer"
+          id="resizer-right"
+          title="Чирж өргөсгөх / нарийсгах"
+        ></div>
+        <aside class="panel panel-right" id="panel-right"></aside>
       </div>
-
-      <div class="resizer" id="resizer-right" title="Чирж өргөсгөх / нарийсгах"></div>
-      <aside class="panel panel-right" id="panel-right"></aside>
     </div>
-  </div>
 
-  <!-- Олон сонголтот dropdown (нийтийн) -->
-  <div id="dropdown">
-    <div class="dd-search">
-      <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="dd-search" placeholder="Хайх…" autocomplete="off" />
+    <!-- Олон сонголтот dropdown (нийтийн) -->
+    <div id="dropdown">
+      <div class="dd-search">
+        <svg viewBox="0 0 24 24" stroke-width="2">
+          <circle cx="11" cy="11" r="7" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input
+          type="text"
+          id="dd-search"
+          placeholder="Хайх…"
+          autocomplete="off"
+        />
+      </div>
+      <div class="dd-list" id="dd-list"></div>
+      <div class="dd-footer">
+        <button id="dd-reset">Цэвэрлэх</button>
+        <button id="dd-all" class="primary">Бүгдийг сонгох</button>
+      </div>
     </div>
-    <div class="dd-list" id="dd-list"></div>
-    <div class="dd-footer">
-      <button id="dd-reset">Цэвэрлэх</button>
-      <button id="dd-all" class="primary">Бүгдийг сонгох</button>
+
+    <!-- Санал зөвлөмжийн жагсаалт -->
+    <div id="sg-panel">
+      <div class="sg-rz sg-rz-l"></div>
+      <div class="sg-rz sg-rz-t"></div>
+      <div class="sg-rz sg-rz-tl"></div>
+      <div class="sg-head" id="sg-head"></div>
+      <div class="sg-list" id="sg-list"></div>
     </div>
-  </div>
 
-  <!-- Санал зөвлөмжийн жагсаалт -->
-  <div id="sg-panel">
-    <div class="sg-rz sg-rz-l"></div>
-    <div class="sg-rz sg-rz-t"></div>
-    <div class="sg-rz sg-rz-tl"></div>
-    <div class="sg-head" id="sg-head"></div>
-    <div class="sg-list" id="sg-list"></div>
-  </div>
-
-  <script src="js/app.js"></script>
-  <script src="js/report.js"></script>
-  <script src="js/login.js"></script>
-</body>
+    <script src="js/app.js"></script>
+    <script src="js/report.js"></script>
+    <script src="js/login.js"></script>
+  </body>
 </html>
